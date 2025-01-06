@@ -1,0 +1,27 @@
+
+# Run tests
+echo "Running tests..."
+npm test
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed. Push aborted."
+  exit 1
+fi
+
+echo "============================================================"
+echo "✅ Tests passed."
+
+# Validate branch name
+branch_name=$(git symbolic-ref --short HEAD)
+
+pattern="^(feature|bugfix|hotfix|release|chore)\/[a-z0-9._-]+$"
+
+echo "Validating branch name: $branch_name"
+
+if ! echo "$branch_name" | grep -Eq "$pattern"; then
+  echo "❌ Branch name '$branch_name' does not match the required pattern."
+  echo "✅ Use one of the following prefixes: 'feature/', 'bugfix/', 'hotfix/', 'release/', or 'chore/'."
+  echo "Example: feature/new-login-page or bugfix/fix-login-error"
+  exit 1
+fi
+
+echo "✅ Branch name is valid. Proceeding with push..."
