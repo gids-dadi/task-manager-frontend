@@ -22,7 +22,7 @@ export default {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        poppinsBalck: ["var(--font-poppins-black)"],
+        poppinsBlack: ["var(--font-poppins-black)"],
         poppinsBold: ["var(--font-poppins-bold)"],
         poppinsLight: ["var(--font-poppins-light)"],
         poppinsMedium: ["var(--font-poppins-medium)"],

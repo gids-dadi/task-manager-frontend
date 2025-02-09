@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "../globals.css";
+import NavBar from "@/components/NavBar";
 
 const poppinsBlack = localFont({
   weight: "100 200 300 400 500 600 700 800 900",
@@ -33,7 +34,10 @@ export const RootLayout = ({ children }) => {
       <body
         className={`${poppinsBlack.variable} ${poppinsBold.variable} ${poppinsLight.variable} ${poppinsMedium.variable} ${poppinsRegular.variable} antialiased`}
       >
-        {children}
+        <div className="flex h-screen flex-col bg-white">
+          <NavBar />
+          <main>{children}</main>
+        </div>
       </body>
     </html>
   );
