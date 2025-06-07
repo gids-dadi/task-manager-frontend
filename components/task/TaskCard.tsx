@@ -1,5 +1,5 @@
 import React from "react";
-import { FaUser, FaEdit, FaRegCalendarCheck } from "react-icons/fa";
+import { FaEdit, FaRegCalendarCheck } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 
 const TaskCard = ({ tasks, setTasks, task }) => {
@@ -35,37 +35,32 @@ const TaskCard = ({ tasks, setTasks, task }) => {
     >
       <div className="mb-2 flex items-center justify-between">
         <h3 className="font-semibold text-gray-900">{task.title}</h3>
-        <button
-          onClick={() => deleteTask(task.id)}
-          className="text-xs text-red-500 hover:text-red-700"
-        >
-          <TiDelete className="size-5" />
-        </button>
-        <button
-          onClick={() => deleteTask(task.id)}
-          className="text-xs text-red-500 hover:text-red-700"
-        >
-          <FaEdit className="size-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => deleteTask(task.id)}
+            className="text-xs text-red-500 hover:text-red-700"
+          >
+            <TiDelete className="size-4" />
+          </button>
+          <button
+            onClick={() => deleteTask(task.id)}
+            className="text-xs text-red-500 hover:text-red-700"
+          >
+            <FaEdit className="size-3" />
+          </button>
+        </div>
       </div>
 
       <p className="mb-3 line-clamp-1 text-sm text-gray-600">
         {task.description}
       </p>
 
-      <div className="mb-3">
+      <div className="flex items-center gap-4 space-y-1 text-xs text-gray-500">
         <span
           className={`inline-block rounded-full border px-2 py-1 text-xs font-medium ${getPriorityBadge(task.priority)}`}
         >
           {task.priority}
         </span>
-      </div>
-
-      <div className="space-y-1 text-xs text-gray-500">
-        <div className="flex items-center gap-1">
-          <FaUser className="size-3" />
-          {task.assignee}
-        </div>
         <div className="flex items-center gap-1">
           <FaRegCalendarCheck className="size-3" />
           {new Date(task.dueDate).toLocaleDateString()}

@@ -18,7 +18,6 @@ const TaskManager = () => {
       priority: "high",
       status: "todo",
       dueDate: "2025-06-10",
-      assignee: "John Doe",
     },
     {
       id: 2,
@@ -27,7 +26,6 @@ const TaskManager = () => {
       priority: "medium",
       status: "inprogress",
       dueDate: "2025-06-08",
-      assignee: "Jane Smith",
     },
     {
       id: 3,
@@ -36,7 +34,6 @@ const TaskManager = () => {
       priority: "low",
       status: "completed",
       dueDate: "2025-06-05",
-      assignee: "Mike Johnson",
     },
     {
       id: 4,
@@ -45,7 +42,6 @@ const TaskManager = () => {
       priority: "high",
       status: "inprogress",
       dueDate: "2025-06-12",
-      assignee: "Sarah Wilson",
     },
     {
       id: 5,
@@ -54,7 +50,6 @@ const TaskManager = () => {
       priority: "high",
       status: "todo",
       dueDate: "2025-06-09",
-      assignee: "Alex Brown",
     },
   ]);
   const [showAddTask, setShowAddTask] = useState(false);

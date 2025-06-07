@@ -4,7 +4,6 @@ import React from "react";
 const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
   const [newTask, setNewTask] = React.useState({
     title: "",
-    assignee: "",
     description: "",
     priority: "low",
     dueDate: "",
@@ -31,7 +30,6 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
         description: "",
         priority: "medium",
         dueDate: "",
-        assignee: "",
       });
       setShowAddTask(false);
     }
@@ -50,15 +48,7 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
             setNewTask({ ...newTask, title: e.target.value })
           }
         />
-        <input
-          type="text"
-          placeholder="Assignee"
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
-          value={newTask.assignee}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setNewTask({ ...newTask, assignee: e.target.value })
-          }
-        />
+
         <textarea
           placeholder="Description"
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500 md:col-span-2"
