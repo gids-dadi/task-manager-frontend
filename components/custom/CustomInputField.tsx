@@ -10,7 +10,7 @@ interface CustomInputFieldProps
   value: string;
   name: string;
   placeholder?: string;
-  handleChangeText: () => void;
+  handleChangeText: React.ChangeEventHandler<HTMLInputElement>;
   otherStyles?: string;
   labelBySide?: boolean;
   icon?: string;
