@@ -51,8 +51,6 @@ const RegistrationForm = () => {
     }
   };
 
-  console.log(errors);
-
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
     setFormValues((prevValues) => ({

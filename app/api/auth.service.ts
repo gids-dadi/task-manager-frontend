@@ -1,8 +1,5 @@
 import taskApi from ".";
 
-
-
-
 export const signup = (data: {
   firstName: string;
   lastName: string;
@@ -13,5 +10,5 @@ export const signup = (data: {
 };
 
 export const login = (data: { email: string; password: string }) => {
-  return taskApi.post("/auth/login", data);
+  return taskApi.post("/auth/login", data).then((res) => res.data);
 };

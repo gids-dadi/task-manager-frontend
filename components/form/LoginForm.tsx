@@ -33,21 +33,21 @@ const LoginForm = () => {
 
   const handleSubmit = async () => {
     if (!isDirty) return;
+
     try {
       UserLoginValidator.parse({ ...formValues, username: formValues.email });
-      await login({
+
+      const response = await login({
         email: formValues.email,
         password: formValues.password,
-      }).then((response) => {
-        if (response.status === 200) {
-          router.push("");
-        }
-      });
-      setFormValues({
-        email: "",
-        password: "",
       });
 
+      if (response.access_token) {
+        router.push("/");
+        localStorage.setItem("access_token", response.access_token);
+      }
+
+      setFormValues({ email: "", password: "" });
       setIsDirty(false);
       setErrors({});
     } catch (error) {
@@ -57,6 +57,8 @@ const LoginForm = () => {
           return acc;
         }, {});
         setErrors(errorMessages);
+      } else {
+        console.error("Login failed:", error);
       }
     }
   };
