@@ -15,8 +15,6 @@ const TaskManager = () => {
 
   const [showAddTask, setShowAddTask] = useState(false);
 
-  console.log(tasks);
-
   const getAllTasks = () => {
     getTasks()
       .then((data) => {
@@ -48,7 +46,7 @@ const TaskManager = () => {
       icon: <RiCheckboxBlankLine className="size-5" />,
     },
     {
-      id: "inprogress",
+      id: "in-progress",
       title: "In Progress",
       color: "bg-blue-100",
       headerColor: "bg-blue-200",
@@ -92,7 +90,7 @@ const TaskManager = () => {
   const tasksByStatus = useMemo(() => {
     const grouped = {
       todo: [],
-      inprogress: [],
+      "in-progress": [],
       completed: [],
     };
 
