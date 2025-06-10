@@ -6,10 +6,17 @@ enum Priority {
   HIGH = "high",
 }
 
+enum TaskStatus {
+  TODO = "todo",
+  IN_PROGRESS = "in-progress",
+  COMPLETED = "completed",
+}
+
 interface CreateTaskDto {
   title: string;
   description: string;
   priority: Priority;
+  status: TaskStatus;
   dueDate: string;
 }
 

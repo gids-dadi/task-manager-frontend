@@ -7,11 +7,17 @@ enum Priority {
   MEDIUM = "medium",
   HIGH = "high",
 }
+enum TaskStatus {
+  TODO = "todo",
+  IN_PROGRESS = "in-progress",
+  COMPLETED = "completed",
+}
 const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
   const [newTask, setNewTask] = React.useState({
     title: "",
     description: "",
     priority: Priority.LOW,
+    status: TaskStatus.TODO,
     dueDate: "",
   });
 
@@ -23,6 +29,7 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
         title: "",
         description: "",
         priority: Priority.LOW,
+        status: TaskStatus.TODO,
         dueDate: "",
       });
       setShowAddTask(false);
@@ -66,6 +73,19 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
           <option value="medium">Medium Priority</option>
           <option value="high">High Priority</option>
         </select>
+
+        <select
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+          value={newTask.status}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setNewTask({ ...newTask, status: e.target.value as TaskStatus })
+          }
+        >
+          <option value="todo">To Do</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+
         <input
           type="date"
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"

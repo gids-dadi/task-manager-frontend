@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaClock } from "react-icons/fa6";
 import { RiCheckboxBlankLine } from "react-icons/ri";
@@ -8,51 +8,29 @@ import AddTaskForm from "../../components/form/AddTaskForm";
 import TaskCard from "../../components/task/TaskCard";
 import TasksStatistics from "../../components/task/TasksStatistics";
 import TaskPageHead from "../../components/task/TaskPageHead";
+import { getTasks } from "../api/task.service";
 
 const TaskManager = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Complete project proposal",
-      description: "Finalize the Q2 project proposal with budget details",
-      priority: "high",
-      status: "todo",
-      dueDate: "2025-06-10",
-    },
-    {
-      id: 2,
-      title: "Review code changes",
-      description: "Review pull requests for the authentication module",
-      priority: "medium",
-      status: "inprogress",
-      dueDate: "2025-06-08",
-    },
-    {
-      id: 3,
-      title: "Update documentation",
-      description: "Update API documentation for the new endpoints",
-      priority: "low",
-      status: "completed",
-      dueDate: "2025-06-05",
-    },
-    {
-      id: 4,
-      title: "Design system implementation",
-      description: "Implement the new design system components",
-      priority: "high",
-      status: "inprogress",
-      dueDate: "2025-06-12",
-    },
-    {
-      id: 5,
-      title: "Bug fixes",
-      description: "Fix critical bugs reported by QA team",
-      priority: "high",
-      status: "todo",
-      dueDate: "2025-06-09",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+
   const [showAddTask, setShowAddTask] = useState(false);
+
+  console.log(tasks);
+
+  const getAllTasks = () => {
+    getTasks()
+      .then((data) => {
+        setTasks(data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch tasks:", error);
+        alert("Failed to fetch tasks. Please try again later.");
+      });
+  };
+
+  useEffect(() => {
+    getAllTasks();
+  }, []);
 
   const [filters, setFilters] = useState({
     priority: "all",
