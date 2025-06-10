@@ -82,7 +82,7 @@ const CustomInputField: React.FC<CustomInputFieldProps> = ({
               type="button"
             >
               <Image
-                src={!showPassword ? icons.eye : icons.eyeHide}
+                src={!showPassword ? icons.eyeIcon : icons.eyeSlashIcon}
                 alt="Toggle Password Visibility"
                 width={25}
                 height={25}

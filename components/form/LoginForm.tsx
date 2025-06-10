@@ -58,7 +58,7 @@ const LoginForm = () => {
         }, {});
         setErrors(errorMessages);
       } else {
-        console.error("Login failed:", error);
+        console.log("Login failed:", error);
       }
     }
   };
