@@ -5,11 +5,12 @@ import { useState } from "react";
 import Link from "next/link";
 import CustomButton from "../custom/CustomButton";
 import { z } from "zod";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { UserLoginValidator } from "../../lib/validator";
+import { login } from "../../app/api/auth.service";
 
 const LoginForm = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [isDirty, setIsDirty] = useState(false);
   const [errors, setErrors] = useState<any>({});
   const [formValues, setFormValues] = useState({
@@ -34,15 +35,14 @@ const LoginForm = () => {
     if (!isDirty) return;
     try {
       UserLoginValidator.parse({ ...formValues, username: formValues.email });
-      // await login({
-      //   variables: {
-      //     data: {
-      //       username: formValues.email,
-      //       password: formValues.password,
-      //     },
-      //   },
-      // });
-
+      await login({
+        email: formValues.email,
+        password: formValues.password,
+      }).then((response) => {
+        if (response.status === 200) {
+          router.push("");
+        }
+      });
       setFormValues({
         email: "",
         password: "",

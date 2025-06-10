@@ -6,8 +6,11 @@ import CustomButton from "../custom/CustomButton";
 import { z } from "zod";
 import { UserRegistrationValidator } from "../../lib/validator";
 import CustomCheckboxField from "../custom/CustomCheckboxField";
+import { signup } from "../../app/api/auth.service";
+import { useRouter } from "next/navigation";
 
 const RegistrationForm = () => {
+  const router = useRouter();
   const [isDirty, setIsDirty] = useState(false);
   const [errors, setErrors] = useState<any>(false);
   const [formValues, setFormValues] = useState({
@@ -62,7 +65,22 @@ const RegistrationForm = () => {
     if (!isDirty) return;
     try {
       UserRegistrationValidator.parse(formValues);
-      console.log("Form submitted successfully:", formValues);
+      await signup({
+        firstName: formValues.firstName,
+        lastName: formValues.lastName,
+        email: formValues.email,
+        password: formValues.password,
+      }).then((data) => {
+        console.log("Registration successful:", data);
+        router.push("/login");
+        setFormValues({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          termsAndCondition: false,
+        });
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessages = error.errors.reduce((acc, curr) => {
