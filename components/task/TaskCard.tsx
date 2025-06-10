@@ -2,7 +2,7 @@ import React from "react";
 import { FaEdit, FaRegCalendarCheck } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 
-const TaskCard = ({ tasks, setTasks, task }) => {
+const TaskCard = ({ tasks, setTasks, task, onEdit }) => {
   const deleteTask = (taskId) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
   };
@@ -43,7 +43,7 @@ const TaskCard = ({ tasks, setTasks, task }) => {
             <TiDelete className="size-4" />
           </button>
           <button
-            onClick={() => deleteTask(task.id)}
+            onClick={() => onEdit(task.id)}
             className="text-xs text-red-500 hover:text-red-700"
           >
             <FaEdit className="size-3" />

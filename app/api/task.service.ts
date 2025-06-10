@@ -26,6 +26,6 @@ export const createTask = (data: CreateTaskDto) =>
   taskApi.post("/tasks", data).then((res) => res.data);
 
 export const updateTask = (id: number, data: Partial<CreateTaskDto>) =>
-  taskApi.patch(`/tasks/${id}`, data);
+  taskApi.put(`/tasks/${id}`, data);
 
 export const deleteTask = (id: number) => taskApi.delete(`/tasks/${id}`);

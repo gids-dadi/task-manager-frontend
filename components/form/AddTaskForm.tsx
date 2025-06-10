@@ -1,6 +1,9 @@
 "use client";
-import React from "react";
-import { createTask } from "../../app/api/task.service";
+import React, { useEffect, useState } from "react";
+import {
+  createTask,
+  updateTask as updateTaskService,
+} from "../../app/api/task.service";
 
 enum Priority {
   LOW = "low",
@@ -12,8 +15,34 @@ enum TaskStatus {
   IN_PROGRESS = "in-progress",
   COMPLETED = "completed",
 }
-const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
-  const [newTask, setNewTask] = React.useState({
+
+interface Task {
+  id?: number;
+  title: string;
+  description: string;
+  priority: Priority;
+  status: TaskStatus;
+  dueDate: string;
+}
+
+interface AddTaskFormProps {
+  setShowAddTask: (show: boolean) => void;
+  setTasks: (tasks: Task[]) => void;
+  tasks: Task[];
+  taskToEdit: Task | null;
+  getAllTasks: () => void;
+}
+
+const AddTaskForm: React.FC<AddTaskFormProps> = ({
+  setShowAddTask,
+  setTasks,
+  tasks,
+  taskToEdit,
+  getAllTasks,
+}) => {
+  const isEditing = !!taskToEdit;
+
+  const [task, setTask] = useState<Task>({
     title: "",
     description: "",
     priority: Priority.LOW,
@@ -21,11 +50,23 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
     dueDate: "",
   });
 
-  const addTask = async () => {
+  useEffect(() => {
+    if (taskToEdit) {
+      setTask(taskToEdit);
+    }
+  }, [taskToEdit]);
+
+  const handleSubmit = async () => {
     try {
-      const response = await createTask(newTask);
-      setTasks([...tasks, response]);
-      setNewTask({
+      if (isEditing && taskToEdit?.id) {
+        await updateTaskService(taskToEdit.id, task);
+        getAllTasks();
+      } else {
+        const response = await createTask(task);
+        setTasks([...tasks, response]);
+      }
+
+      setTask({
         title: "",
         description: "",
         priority: Priority.LOW,
@@ -34,39 +75,43 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
       });
       setShowAddTask(false);
     } catch (error) {
-      console.error("Failed to create task:", error);
-      alert("Failed to create task. Please try again.");
+      console.error(
+        `Failed to ${isEditing ? "update" : "create"} task:`,
+        error,
+      );
+      alert(
+        `Failed to ${isEditing ? "update" : "create"} task. Please try again.`,
+      );
     }
   };
 
   return (
     <div className="mt-6 rounded-lg border bg-gray-50 p-4">
-      <h3 className="mb-4 text-lg font-semibold">Add New Task</h3>
+      <h3 className="mb-4 text-lg font-semibold">
+        {isEditing ? "Edit Task" : "Add New Task"}
+      </h3>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <input
           type="text"
           placeholder="Task title"
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-          value={newTask.title}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setNewTask({ ...newTask, title: e.target.value })
-          }
+          value={task.title}
+          onChange={(e) => setTask({ ...task, title: e.target.value })}
         />
 
         <textarea
           placeholder="Description"
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
           rows={2}
-          value={newTask.description}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-            setNewTask({ ...newTask, description: e.target.value })
-          }
+          value={task.description}
+          onChange={(e) => setTask({ ...task, description: e.target.value })}
         />
+
         <select
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-          value={newTask.priority}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setNewTask({ ...newTask, priority: e.target.value as Priority })
+          value={task.priority}
+          onChange={(e) =>
+            setTask({ ...task, priority: e.target.value as Priority })
           }
         >
           <option value="low">Low Priority</option>
@@ -76,9 +121,9 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
 
         <select
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-          value={newTask.status}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setNewTask({ ...newTask, status: e.target.value as TaskStatus })
+          value={task.status}
+          onChange={(e) =>
+            setTask({ ...task, status: e.target.value as TaskStatus })
           }
         >
           <option value="todo">To Do</option>
@@ -89,18 +134,17 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
         <input
           type="date"
           className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-          value={newTask.dueDate}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setNewTask({ ...newTask, dueDate: e.target.value })
-          }
+          value={task.dueDate}
+          onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
         />
       </div>
+
       <div className="mt-4 flex gap-2">
         <button
-          onClick={addTask}
+          onClick={handleSubmit}
           className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-700"
         >
-          Add Task
+          {isEditing ? "Update Task" : "Add Task"}
         </button>
         <button
           onClick={() => setShowAddTask(false)}
