@@ -13,9 +13,10 @@ interface CreateTaskDto {
   dueDate: string;
 }
 
-export const getTasks = () => taskApi.get("/tasks");
+export const getTasks = () => taskApi.get("/tasks").then((res) => res.data);
 
-export const createTask = (data: CreateTaskDto) => taskApi.post("/tasks", data);
+export const createTask = (data: CreateTaskDto) =>
+  taskApi.post("/tasks", data).then((res) => res.data);
 
 export const updateTask = (id: number, data: Partial<CreateTaskDto>) =>
   taskApi.patch(`/tasks/${id}`, data);

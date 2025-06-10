@@ -1,37 +1,34 @@
 "use client";
 import React from "react";
+import { createTask } from "../../app/api/task.service";
 
+enum Priority {
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+}
 const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
   const [newTask, setNewTask] = React.useState({
     title: "",
     description: "",
-    priority: "low",
+    priority: Priority.LOW,
     dueDate: "",
   });
 
-  // const updateTaskStatus = (taskId, newStatus) => {
-  //   setTasks(
-  //     tasks.map((task) =>
-  //       task.id === taskId ? { ...task, status: newStatus } : task,
-  //     ),
-  //   );
-  // };
-
-  const addTask = () => {
-    if (newTask.title.trim()) {
-      const task = {
-        id: Date.now(),
-        ...newTask,
-        status: "todo",
-      };
-      setTasks([...tasks, task]);
+  const addTask = async () => {
+    try {
+      const response = await createTask(newTask);
+      setTasks([...tasks, response]);
       setNewTask({
         title: "",
         description: "",
-        priority: "medium",
+        priority: Priority.LOW,
         dueDate: "",
       });
       setShowAddTask(false);
+    } catch (error) {
+      console.error("Failed to create task:", error);
+      alert("Failed to create task. Please try again.");
     }
   };
 
@@ -42,7 +39,7 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
         <input
           type="text"
           placeholder="Task title"
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           value={newTask.title}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setNewTask({ ...newTask, title: e.target.value })
@@ -51,7 +48,7 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
 
         <textarea
           placeholder="Description"
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500 md:col-span-2"
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500 md:col-span-2"
           rows={2}
           value={newTask.description}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -59,10 +56,10 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
           }
         />
         <select
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           value={newTask.priority}
           onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setNewTask({ ...newTask, priority: e.target.value })
+            setNewTask({ ...newTask, priority: e.target.value as Priority })
           }
         >
           <option value="low">Low Priority</option>
@@ -71,7 +68,7 @@ const AddTaskForm = ({ setShowAddTask, setTasks, tasks }) => {
         </select>
         <input
           type="date"
-          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-transparent focus:ring-2 focus:ring-blue-500"
+          className="rounded-lg border border-gray-300 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
           value={newTask.dueDate}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setNewTask({ ...newTask, dueDate: e.target.value })
