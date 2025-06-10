@@ -5,6 +5,7 @@ import Link from "next/link";
 import CustomButton from "../custom/CustomButton";
 import { z } from "zod";
 import { UserRegistrationValidator } from "../../lib/validator";
+import CustomCheckboxField from "../custom/CustomCheckboxField";
 
 const RegistrationForm = () => {
   const [isDirty, setIsDirty] = useState(false);
@@ -13,7 +14,6 @@ const RegistrationForm = () => {
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
     password: "",
     termsAndCondition: false,
   });
@@ -48,18 +48,21 @@ const RegistrationForm = () => {
     }
   };
 
-  // const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, checked } = e.target;
-  //   setFormValues((prevValues) => ({
-  //     ...prevValues,
-  //     [name]: checked,
-  //   }));
-  // };
+  console.log(errors);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: checked,
+    }));
+  };
 
   const handleSubmit = async () => {
     if (!isDirty) return;
     try {
       UserRegistrationValidator.parse(formValues);
+      console.log("Form submitted successfully:", formValues);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorMessages = error.errors.reduce((acc, curr) => {
@@ -143,26 +146,27 @@ const RegistrationForm = () => {
           )}
         </div>
 
-        {/* <div className="flex w-full flex-col">
-              <CustomCheckboxField
-                name="termsAndCondition"
-                checked={formValues.termsAndCondition}
-                handleChange={handleCheckboxChange}
-                labelBySide
-                description={
-                  <div className="text-xs md:text-sm">
-                    I agree to the{" "}
-                    <span className="text-[#fc4100]">terms and conditions</span>{" "}
-                    and <span className="text-[#fc4100]">privacy policy</span>
-                  </div>
-                }
-              />
-              {errors.termsAndCondition && (
-                <span className="text-sm text-red-500">
-                  {errors.termsAndCondition}
-                </span>
-              )}
-            </div> */}
+        <div className="flex w-full flex-col">
+          <CustomCheckboxField
+            name="termsAndCondition"
+            checked={formValues.termsAndCondition}
+            handleChange={handleCheckboxChange}
+            labelBySide
+            description={
+              <div className="text-xs md:text-sm">
+                I agree to the{" "}
+                <Link href="#" className="text-[#fc4100]">
+                  terms and conditions
+                </Link>
+              </div>
+            }
+          />
+          {errors.termsAndCondition && (
+            <span className="text-sm text-red-500">
+              {errors.termsAndCondition}
+            </span>
+          )}
+        </div>
 
         <p className="pb-4 text-sm">
           Already have an account?{" "}
