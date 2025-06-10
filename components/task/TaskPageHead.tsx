@@ -2,7 +2,18 @@
 import React from "react";
 import { CiCirclePlus, CiSearch } from "react-icons/ci";
 
-const TaskPageHead = ({ setFilters, filters, setShowAddTask, showAddTask }) => {
+const HandleLogout = () => {
+  localStorage.removeItem("access-token");
+  window.location.href = "/login";
+};
+
+const TaskPageHead = ({
+  setFilters,
+  filters,
+  setShowAddTask,
+  showAddTask,
+  handleAdd,
+}) => {
   return (
     <div className="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
@@ -44,6 +55,14 @@ const TaskPageHead = ({ setFilters, filters, setShowAddTask, showAddTask }) => {
         >
           <CiCirclePlus className="size-6" />
           Add Task
+        </button>
+
+        {/* Logout */}
+        <button
+          onClick={HandleLogout}
+          className="rounded-lg bg-gray-300 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-400"
+        >
+          Logout
         </button>
       </div>
     </div>

@@ -8,6 +8,12 @@ const config = {
   theme: {
     extend: {
       colors: {
+        primaryBrand: "#248445",
+        brandSuccess: "#05C597",
+        brandSuccessLight: "#B1E33D",
+        brandBlue: "#1B335E",
+        brandBg: "#F1F8FE",
+        brandGreen: "#50BFA5",
         primaryBrand: "#FC4100",
         brandBlack: "#0E0E2C",
         brandSuccess: "#05C597",
